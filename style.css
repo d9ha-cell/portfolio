@@ -2,7 +2,7 @@
 html {
   --color-accent: oklch(86% 54% 240);
   accent-color: var(--color-accent);
-
+  color-scheme: light dark;
 }
 
 body {
@@ -23,9 +23,10 @@ img{
 }
 
 nav{
+  --border-color: oklch(50% 10% 200 / 40%);
   display: flex;
   margin-bottom: lem;
-  border-bottom: 1px solid oklch(80% 3% 200);
+  border-bottom: 1px solid var(--border-color);
 }
 
 nav a {
@@ -37,14 +38,14 @@ nav a {
 }
 
 nav a.current{
-  border-bottom: 0.4em solid oklch(80% 3% 200);
+  border-bottom: 0.4em solid var(--border-color);
   padding-bottom: 0.1em;  
 }
 
 nav a:hover {
   border-bottom: 0.4em solid var(--color-accent);
   padding-bottom: 0.1em;
-  background-color: oklch(from var(--color-accent) 95% 5% h);
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
 
 input, textarea, button{
@@ -105,7 +106,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .resume-page h1 {
   color:blue;
-  font-size: 250%;
+  font-size: 235%;
   border-bottom: 3px solid navy;
   padding-bottom: 0.2em;
 }
@@ -120,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .resume-page h3{
   color: #99ad3d;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.3em;}
 
 .resume-page p{
   line-height: 1.5;
@@ -136,5 +137,13 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 85ch;
 }
 
-
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  
+  right: 1rem;
+  font-size: 80%;
+  font-family: inherit;
 }
+
+
