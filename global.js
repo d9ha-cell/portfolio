@@ -73,10 +73,15 @@ form?.addEventListener('submit', function(event) {
     event.preventDefault();
 
     let data = new FormData(form);
+    
+    let url = form.action + '?';
 
     for (let [name, value] of data) {
 
         console.log(name, encodeURIComponent(value));}
+
+    console.log(url);
+    location.href = url;
 });
 
 
