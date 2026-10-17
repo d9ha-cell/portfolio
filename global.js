@@ -78,10 +78,13 @@ form?.addEventListener('submit', function(event) {
 
     for (let [name, value] of data) {
 
-        console.log(name, encodeURIComponent(value));}
+        url += `${name}=${encodeURIComponent(value)}&`;
+
+    }
 
     console.log(url);
     location.href = url;
+
 });
 
 
