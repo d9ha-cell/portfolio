@@ -2,7 +2,7 @@
     {
         "title": "Baby Food Protein Comparison",
         "year": "2026",
-        "image": "../images/Screenshot 2026-10-23 183152.png",
+        "image": "images/Screenshot 2026-10-23 183152.png",
         "description": "Compared the Protein content of Baby Food across different categories utilizing Python, Pandas and MatplotLib."
     },
     {
@@ -20,7 +20,7 @@
     {
         "title": "Recipes Ratings vs Calories Analysis",
         "year": "2025",
-        "image": "../images/Screenshot 2026-10-23 184027.png",
+        "image": "images/Screenshot 2026-10-23 184027.png",
         "description": "Analyzed and Cleaned a Recipe Dataset in order to find connections between user opinion and total amount of calories"
     },
     {

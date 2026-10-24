@@ -115,7 +115,7 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
 
         article.innerHTML = `
             <${headingLevel}>${pro.title}</${headingLevel}>
-            <img src ="${new URL(pro.image, import.meta.url).href}" alt="${pro.title}">
+            <img src ="${new URL(pro.image, document.querySelector('script[src*="global.js"]').src).href}" alt="${pro.title}">
             <p>${pro.description}</p>
             `;
 
