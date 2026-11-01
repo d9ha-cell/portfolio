@@ -117,7 +117,8 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
             <${headingLevel}>${pro.title}</${headingLevel}>
             <img src ="${new URL(pro.image, document.querySelector('script[src*="global.js"]').src).href}" alt="${pro.title}">
             <p>${pro.description}</p>
-            `;
+            <p class= "project-year">${pro.year}</p>
+        `;
 
         containerElement.appendChild(article);
     }

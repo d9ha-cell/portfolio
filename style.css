@@ -147,3 +147,75 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+.projects article {
+  display: flex;
+  flex-direction: column;
+}
+
+.projects article .project-year {
+  margin-top: 1em;
+  color: gray;
+  font-style: italic;
+  font-size: 0.9;
+}
+
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 0.5em;
+  list-style:none;
+  padding: 1em;
+  margin: 1em 0;
+  border: 1px solid #ccc;
+}
+
+.legend li {
+  display:flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-color: var(--color);
+  border-radius: 50%;
+  flex-shrink:0;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+&:has(path:hover) {
+  path:not(:hover) {
+    opacity: 0.5;
+  }
+}
+
+path {
+  transition: 300ms;
+}
+
+#projects-pie-plot path.selected {
+  fill: oklch(60% 45% 0) !important;
+}
+
+path {
+  cursor:pointer;
+}
+
+.legend li.selected {
+  background-color: oklch(60% 45% 0 / 20%);
+  border-radius: 0.3em;
+
+}
