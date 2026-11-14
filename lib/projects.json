@@ -1,5 +1,14 @@
 [
     {
+        "title": "BikePaths: Boston Bike Traffic Visualization",
+        "year": "2026",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "Built a map of Boston and Cambridge with shows the layout of bike traffic using Mapbox and D3.js",
+        "url": "https://d9ha-cell.github.io/bikepaths/"
+    },
+   
+   
+    {
         "title": "Baby Food Protein Comparison",
         "year": "2026",
         "image": "images/Screenshot 2026-10-23 183152.png",
