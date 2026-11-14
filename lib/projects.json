@@ -2,7 +2,7 @@
     {
         "title": "BikePaths: Boston Bike Traffic Visualization",
         "year": "2026",
-        "image": "../images/bikepaths.png",
+        "image": "images/bikePaths.png",
         "description": "Built a map of Boston and Cambridge with shows the layout of bike traffic using Mapbox and D3.js",
         "url": "https://d9ha-cell.github.io/bikepaths/"
     },
