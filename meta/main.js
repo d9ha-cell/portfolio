@@ -441,7 +441,7 @@ d3.select('#scatter-story')
 
     });
 
-  const fileScroller = scrollerma();
+  const fileScroller = scrollama();
 
   fileScroller
     .setup({
@@ -458,7 +458,10 @@ d3.select('#scatter-story')
         d => d.datetime <= commit.datetime
       );
 
+      
+      console.log('Visible lines:', filteredData.length);
       renderFileVisualization(filteredData);
+
     });
 
 function renderFileVisualization(data){
