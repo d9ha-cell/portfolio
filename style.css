@@ -306,3 +306,66 @@ circle:hover {
 .dots circle.selected {
   fill: Gold;
 }
+
+#scrolly-1 {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+
+}
+
+#scrolly-1 > * {
+  flex: 1;
+}
+
+#scatter-story {
+  position: relative;
+}
+
+#scatter-plot {
+  position: sticky;
+  top: 0;
+  left: 0;
+  bottom: auto;
+  height: 50vh;
+
+}
+
+
+
+#files dd{
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15em;
+  margin: 0 0 1em 0;
+}
+
+#files .line {
+  width: 0.5em;
+  height: 0.5em;
+  background: royalblue;
+  
+  border-radius: 50%;
+}
+
+
+
+#scrolly-2 {
+  display:grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+
+#file-story{
+  position: relative;
+}
+
+#file-visualization {
+  position: sticky;
+  top: 2rem;
+  max-height: 90vh;
+  overflow-y: auto;
+}

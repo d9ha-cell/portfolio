@@ -6,20 +6,38 @@
     <title>Meta</title>
     <link rel="stylesheet" href="../style.css">
     <script type="module" src="../global.js"></script>
+    <script src="https://unpkg.com/scrollama@3/build/scrollama.js"></script>
     <script type="module" src="main.js"></script>
 </head>
 <body>
     <h1>Meta</h1>
     <p>This page has statistics about the code of this website.</p>
 
-    <div id="stats"></div>
+    <label for="commit-progress">
+        Show commits until:
+    </label>
+    <input
+        type="range"
+        id="commit-progress"
+        min="0"
+        max="100"
+        value="100"
+    />
+    <time id="commit-time"></time>
 
-    <h2>Commits by time of day </h2>
-    <div id="chart"></div>
+    <div id="scrolly-1">
+        <div id ="scatter-story">some filler text here</div>
+
+        <div id="scatter-plot">
+            <h2>Commits by time of day</h2>
+            <div id="chart"></div>
+        </div>
+    </div>
 
     <p id="selection-count"> No Commits Selected</p>
 
     <dl id="language-breakdown" class="stats"></dl>
+    <div id="stats"></div>
 
     <dl id="commit-tooltip" class="info tooltip" hidden>
         <dt>Commit</dt>
@@ -31,6 +49,13 @@
     <dd id="commit-date"></dd>
 
     </dl>
+
+    <div id="scrolly-2">
+        <div id="file-story"></div>
+        <div id="file-visualization">
+            <dl id="files"></dl>
+        </div>
+    </div>
 
 </body>
 </html>

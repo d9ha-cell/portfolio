@@ -1,5 +1,4 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
-
 async function loadData() {
   const data = await d3.csv('loc.csv', (row) => ({
     ...row,
@@ -14,6 +13,9 @@ async function loadData() {
   return data;
 }
 let data = await loadData();
+let commitProgress = 100;
+
+
 function processCommits(data) {
   return d3
     .groups(data, (d) => d.commit)
@@ -50,6 +52,44 @@ function processCommits(data) {
 
 
 let commits = processCommits(data);
+let timeScale = d3
+  .scaleTime()
+  .domain([
+    d3.min(commits, (d) => d.datetime),
+    d3.max(commits, (d) => d.datetime),
+  ])
+  .range([0, 100]);
+
+let commitMaxTime = timeScale.invert(commitProgress);
+
+function onTimeSliderChange() {
+  commitProgress = Number(document.querySelector('#commit-progress').value);
+
+  commitMaxTime = timeScale.invert(commitProgress);
+
+  document.querySelector('#commit-time').textContent = 
+    commitMaxTime.toLocaleString('en-US', {
+      dateStyle: 'long',
+      timeStyle: 'short',
+    });
+
+  const filteredCommits = commits.filter(
+    (d) => d.datetime <= commitMaxTime
+
+  );
+  renderScatterPlot(data, filteredCommits);
+
+  const filteredData = data.filter(d => d.datetime <= commitMaxTime);
+
+  renderFileVisualization(filteredData);
+}
+
+document
+  .querySelector('#commit-progress')
+  .addEventListener('input', onTimeSliderChange);
+
+onTimeSliderChange();
+
 console.log(commits);
 
 function renderScatterPlot(data, commits)
@@ -63,7 +103,9 @@ function renderScatterPlot(data, commits)
 
     const svg = d3
         .select('#chart')
-        .append('svg')
+        .selectAll('svg')
+        .data([null])
+        .join('svg')
         .attr('viewBox', `0 0 ${width} ${height}`)
         .style('overflow', 'visible');
 
@@ -78,8 +120,6 @@ function renderScatterPlot(data, commits)
         height: height - margin.top - margin.bottom,
     };
 
-
-    
     
     const xScale = d3
         .scaleTime()
@@ -97,10 +137,11 @@ function renderScatterPlot(data, commits)
     const xAxis = d3.axisBottom(xScale);
     
     const gridlines = svg
-        .append('g')
-        .attr('class', 'gridlines')
-        .attr('transform', `translate(${usableArea.left}, 0)`);
-
+      .selectAll('gridlines')
+      .data([null])
+      .join('g')
+      .attr('class', 'gridlines')
+      .attr('transform', `translate(${usableArea.left}, 0)`) 
     
     gridlines.call(
             d3.axisLeft(yScale)
@@ -114,13 +155,19 @@ function renderScatterPlot(data, commits)
 
 
     svg
-        .append('g')
+        .selectAll('.x-axis')
+        .data([null])
+        .join('g')
+        .attr('class', 'x-axis') 
         .attr('transform', `translate(0, ${usableArea.bottom})`)
         .call(xAxis);
 
 
     svg
-        .append('g')
+        .selectAll('.y-axis')
+        .data([null])
+        .join('g')
+        .attr('class', 'y-axis') 
         .attr('transform', `translate(${usableArea.left}, 0)`)
         .call(yAxis);
 
@@ -134,7 +181,11 @@ function renderScatterPlot(data, commits)
 
     
     const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
-    const dots = svg.append('g').attr('class', 'dots');
+    const dots = svg
+        .selectAll('.dots')
+        .data([null])
+        .join('g')
+        .attr('class', 'dots');
 
     dots
          .selectAll('circle')
@@ -320,3 +371,124 @@ dl.append('dd').text(maxDepth);
 
 renderCommitInfo(data, commits);
 renderScatterPlot(data, commits);
+
+d3.select('#scatter-story')
+  .selectAll('.step')
+  .data(commits)
+  .join('div')
+  .attr('class', 'step')
+  .html(
+    
+    (d, i) => `
+		On ${d.datetime.toLocaleString('en', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+    })},
+		
+    I made <a href="${d.url}" target="_blank">${
+      i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'
+    }</a>.
+		
+    I edited ${d.totalLines} lines across ${
+      d3.rollups(
+        d.lines,
+        (D) => D.length,
+        (d) => d.file,
+      ).length
+    } files.
+		
+    Then I looked over all I had made, and I saw that it was very good.
+	`,
+  );
+
+  d3.select('#file-story')
+    .selectAll('.step')
+    .data(commits)
+    .join('div')
+    .attr('class', 'step')
+    .html(d => 
+      'On ' + 
+      d.datetime.toLocaleString('en-US', {
+        dateStyle: 'full',
+        timeStyle: 'short'
+      }) + 
+      ', I made <a href "${d.url}" target= "_blank"> another glorious commit</a>. ' +
+      'I edited' + d.totalLines + ' lines across ' + 
+      d3.group(d.lines, line => line.file).size + 
+      ' files. Then I looked over all I had made, and I saw that it was very good.'
+      );
+
+  const scroller =scrollama();
+
+  scroller
+    .setup({
+      step: '#scatter-story .step',
+      offset: 0.5,
+      debug: false,
+    })
+    .onStepEnter((response) => {
+      const commit = response.element.__data__;
+
+      const commitIndex = commits.indexOf(commit);
+      const progress = (commitIndex / (commits.length - 1)) * 100;
+
+      
+      document.querySelector('#commit-progress').value = progress;
+
+
+      onTimeSliderChange();
+
+
+    });
+
+  const fileScroller = scrollerma();
+
+  fileScroller
+    .setup({
+      step: '#file-story .step',
+      offset: 0.5,
+      
+      debug: false,
+    })
+
+    .onStepEnter(response => {
+      const commit = response.element.__data__;
+
+      const filteredData = data.filter(
+        d => d.datetime <= commit.datetime
+      );
+
+      renderFileVisualization(filteredData);
+    });
+
+function renderFileVisualization(data){
+  
+  
+  const files = d3
+    .groups(data, d => d.file)
+    .sort((a, b) => b[1].length - a[1].length);
+
+  d3.select('#files')
+    .selectAll('dt')
+    .data(files)
+    .join('dt')
+    .text(d => d[0]);    
+
+  d3.select('#files')
+    .selectAll('dd')
+    .data(files)
+    .join('dd')
+    .selectAll('div')
+    .data(d => d[1])
+    .join('div')
+    .attr('class', 'line')
+    .style('background-color', d => {
+      const type = d.file.split('.').pop();
+      return d3.schemeTableau10[
+        ['js', 'css', 'html', 'py', 'json', 'md'].indexOf(type) % 10
+
+      ] || 'royalblue';
+    })
+}
+
+renderFileVisualization(data);
